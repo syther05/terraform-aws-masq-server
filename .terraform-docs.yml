@@ -1,0 +1,45 @@
+version: ">= 0.13.0, < 1.0.0"
+
+formatter: markdown table
+
+sections:
+  hide: []
+  show: [inputs,outputs,providers,requirements]
+
+content: |-
+  {{ .Header }}
+
+  This module is used to deploy an EC2 and Security Group in AWS that will auto-configure itself to operate as a MASQ Node.
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+output:
+  file: "README.md"
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+
+output-values:
+  enabled: false
+  from: ""
+
+sort:
+  enabled: true
+  by: name
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: false
+  escape: true
+  indent: 2
+  required: true
+  sensitive: true
+  type: true
