@@ -20,6 +20,7 @@ No requirements.
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Inputs
 
@@ -27,7 +28,7 @@ No requirements.
 |------|-------------|------|---------|:--------:|
 | <a name="input_bcsurl"></a> [bcsurl](#input\_bcsurl) | The url of the blockchain service.  This defaults to ropsten url. | `string` | `"https://ropsten.infura.io/v3/0ead23143b174f6983c76f69ddcf4026"` | no |
 | <a name="input_chain"></a> [chain](#input\_chain) | The name of the blockchain to use, mainnet and ropsten are the only valid options. | `string` | `"ropsten"` | no |
-| <a name="input_clandestine_port"></a> [clandestine\_port](#input\_clandestine\_port) | This is the port you want MASQ to listen on for clandestine traffic.  This will be used for your config.toml and SG settings. | `number` | `54321` | no |
+| <a name="input_clandestine_port"></a> [clandestine\_port](#input\_clandestine\_port) | This is the port you want MASQ to listen on for clandestine traffic.  This will be used for your config.toml and SG settings. | `number` | `null` | no |
 | <a name="input_conkey"></a> [conkey](#input\_conkey) | The private key to sign consuming transactions. | `string` | n/a | yes |
 | <a name="input_dbpass"></a> [dbpass](#input\_dbpass) | The password you would like to use for the MASQ DB. | `string` | `"node"` | no |
 | <a name="input_dnsservers"></a> [dnsservers](#input\_dnsservers) | The DNS servers to use to resolve URLs for requests. | `string` | `"1.0.0.1,1.1.1.1,8.8.8.8,9.9.9.9"` | no |

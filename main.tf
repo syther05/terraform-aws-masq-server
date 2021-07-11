@@ -46,6 +46,10 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"]
 }
 
+resource "random_integer" "port" {
+  min = 1025
+  max = 65000
+}
 resource "aws_security_group" "allow_masq" {
   name        = "allow_masq"
   description = "Allow MASQ inbound traffic"
@@ -53,8 +57,8 @@ resource "aws_security_group" "allow_masq" {
 
   ingress {
     description      = "MASQ from All"
-    from_port        = var.clandestine_port
-    to_port          = var.clandestine_port
+    from_port        = var.clandestine_port != null ? var.clandestine_port : random_integer.port.result
+    to_port          = var.clandestine_port != null ? var.clandestine_port : random_integer.port.result
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -69,6 +73,33 @@ resource "aws_security_group" "allow_masq" {
   }
 }
 
+resource "aws_iam_role" "masq_ec2_role" {
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "masq_profile" {
+  role = aws_iam_role.masq_ec2_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "role-attach" {
+  role       = aws_iam_role.masq_ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
 resource "aws_instance" "masq_node" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
@@ -76,18 +107,19 @@ resource "aws_instance" "masq_node" {
   vpc_security_group_ids      = [aws_security_group.allow_masq.id]
   associate_public_ip_address = true
   key_name                    = var.key_name
-  iam_instance_profile        = var.instance_role
+  iam_instance_profile        = var.instance_role != "" ? var.instance_role : aws_iam_instance_profile.masq_profile.name
   tags = {
     "Name" = var.name
   }
   user_data = templatefile("${path.module}/config.tpl", {
     chain            = var.chain
     bcsurl           = var.bcsurl
-    clandestine_port = var.clandestine_port
+    clandestine_port = var.clandestine_port != null ? var.clandestine_port : random_integer.port.result
     dbpass           = var.dbpass
     dnsservers       = var.dnsservers
     earnwallet       = var.earnwallet
     gasprice         = var.gasprice
     conkey           = var.conkey
+    agent_config     = base64encode(file("${path.module}/amazon-cloudwatch-agent.json"))
   })
 }

@@ -1,6 +1,6 @@
 variable "clandestine_port" {
   type        = number
-  default     = 54321
+  default     = null
   description = "This is the port you want MASQ to listen on for clandestine traffic.  This will be used for your config.toml and SG settings."
 }
 
