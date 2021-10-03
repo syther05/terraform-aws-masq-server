@@ -7,7 +7,6 @@ We assume you have some working knowledge of Terraform to consume this module.
 module "masq_node" {
     source = "github.com/MASQ-Project/terraform-aws-masq-server?ref=v1.0.2"
     mnemonic = "Red Orange Yellow Green Blue Indigo Violet"
-    earnwallet = "0xC7asd84fbasdfasdfasdf791C333F6c776421d0"
 }
 ```
 <!-- BEGIN_TF_DOCS -->
