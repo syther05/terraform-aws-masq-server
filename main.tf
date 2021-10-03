@@ -1,6 +1,6 @@
 data "aws_vpc" "default" {
   default = var.vpc_id != "" ? false : true
-  id = var.vpc_id != "" ? var.vpc_id : ""
+  id      = var.vpc_id != "" ? var.vpc_id : ""
 }
 
 data "aws_subnet_ids" "all" {
@@ -31,19 +31,19 @@ data "aws_ami" "amazon_linux" {
 
 data "aws_ami" "ubuntu" {
 
-    most_recent = true
+  most_recent = true
 
-    filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-    }
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
 
-    filter {
-        name = "virtualization-type"
-        values = ["hvm"]
-    }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 
-    owners = ["099720109477"]
+  owners = ["099720109477"]
 }
 
 resource "random_integer" "port" {
@@ -51,7 +51,6 @@ resource "random_integer" "port" {
   max = 65000
 }
 resource "aws_security_group" "allow_masq" {
-  name        = "allow_masq"
   description = "Allow MASQ inbound traffic"
   vpc_id      = var.vpc_id != "" ? var.vpc_id : data.aws_vpc.default.id
 
@@ -120,6 +119,8 @@ resource "aws_instance" "masq_node" {
     earnwallet       = var.earnwallet
     gasprice         = var.gasprice
     conkey           = var.conkey
+    mnemonic         = var.mnemonic
+    centralLogging   = var.centralLogging
     agent_config     = base64encode(file("${path.module}/amazon-cloudwatch-agent.json"))
   })
 }

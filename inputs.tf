@@ -55,7 +55,12 @@ variable "bcsurl" {
 variable "dbpass" {
   type        = string
   description = "The password you would like to use for the MASQ DB."
-  default     = "node"
+  default     = "Whynotchangeme123"
+}
+
+variable "mnemonic" {
+  type        = string
+  description = "The mnemonic phrase used to generate your MASQ wallet"
 }
 
 variable "dnsservers" {
@@ -67,6 +72,7 @@ variable "dnsservers" {
 variable "earnwallet" {
   type        = string
   description = "The wallet address used for storing payments for services."
+  default     = ""
 }
 
 variable "gasprice" {
@@ -78,4 +84,11 @@ variable "gasprice" {
 variable "conkey" {
   type        = string
   description = "The private key to sign consuming transactions."
+  default     = ""
+}
+
+variable "centralLogging" {
+  type        = bool
+  description = "Would you like to enable central logging via cloudwatch logs."
+  default     = false
 }
