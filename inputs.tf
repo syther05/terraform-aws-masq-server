@@ -13,7 +13,7 @@ variable "vpc_id" {
 variable "key_name" {
   type        = string
   description = "The name of the AWS Key Pair you want to use."
-  default     = "MASQ"
+  default     = ""
 }
 
 variable "instance_role" {
