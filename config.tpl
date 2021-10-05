@@ -27,7 +27,7 @@ echo "dns-servers=\"${dnsservers}\"" >> /home/ubuntu/masq/config.toml
 #echo "earning-wallet=\"${earnwallet}\"" >> /home/ubuntu/masq/config.toml
 echo "gas-price=\"${gasprice}\"" >> /home/ubuntu/masq/config.toml
 echo "ip=\"$${ip}\"" >> /home/ubuntu/masq/config.toml
-echo "log-level=\"trace\"" >> /home/ubuntu/masq/config.toml
+echo "log-level=\"${loglevel}\"" >> /home/ubuntu/masq/config.toml
 echo "neighborhood-mode=\"standard\"" >> /home/ubuntu/masq/config.toml
 echo "real-user=\"1000:1000:/home/ubuntu\"" >> /home/ubuntu/masq/config.toml
 if [ -z "$${arr}" ]
@@ -60,5 +60,11 @@ sudo chown ubuntu:ubuntu /home/ubuntu/.local/share/MASQ/ropsten
 sleep 5s
 /usr/local/bin/masq set-password "${dbpass}"
 /usr/local/bin/masq recover-wallets --consuming-path "m/44'/60'/0'/0/0" --db-password "${dbpass}" --mnemonic-phrase "${mnemonic}" --earning-path "m/44'/60'/0'/0/0"
+
+#sleep 2s
+#systemctl stop MASQNode.service
+#sleep 5s
+#systemctl start MASQNode.service
+
 amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/home/ubuntu/amazon-cloudwatch-agent.json
 echo "done"

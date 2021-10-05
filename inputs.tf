@@ -13,7 +13,7 @@ variable "vpc_id" {
 variable "key_name" {
   type        = string
   description = "The name of the AWS Key Pair you want to use."
-  default     = ""
+  default     = "MASQ"
 }
 
 variable "instance_role" {
@@ -92,3 +92,12 @@ variable "centralLogging" {
   description = "Would you like to enable central logging via cloudwatch logs."
   default     = false
 }
+
+
+variable "loglevel" {
+  type        = string
+  description = "loging detail level [possible values:off, error, warn, info, debug, trace]"
+  default     = "trace"
+}
+
+
